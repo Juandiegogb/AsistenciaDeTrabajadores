@@ -47,22 +47,16 @@ public class UserServices {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-            
-            System.out.println(resultSet);
-            while (resultSet.next()) {
-                System.out.println("Nombre: " + resultSet.getString("name"));            
-                
-            }
-            if (resultSet.last()) {
-                System.out.println("Existe");
-            }else{
-                System.err.println("No existe");
-            }
-            while (resultSet.next()) {
-                System.out.println("ID: " + resultSet.getString("id"));
-                System.out.println("Nombre: " + resultSet.getString("name"));
-            }
 
+            if (resultSet.next()) {
+
+                String avatarUrl = resultSet.getString("avatar");
+                System.out.println(avatarUrl);
+                return avatarUrl;
+            } else {
+                System.out.println("Usuario no encontrado");
+                return "Usuario no encontrado";
+            }
         } catch (SQLException e) {
 
         }

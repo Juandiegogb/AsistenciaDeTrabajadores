@@ -12,9 +12,10 @@ import services.UserServices;
  */
 public class LoginPageController {
 
-    public void Login(String username , String password) {
+    public String Login(String username, String password) {
         UserServices userServices = new UserServices();
-        userServices.Login(username, password);
+        String avatar = userServices.Login(username, password);
+        return avatar;
     }
 
 }
