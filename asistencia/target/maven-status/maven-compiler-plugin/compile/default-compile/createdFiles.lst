@@ -7,6 +7,7 @@ views/Login$4.class
 views/HomePage.class
 controllers/LoginPageController.class
 services/ApiServices.class
+views/HomePage$2.class
 views/SignUp$4.class
 views/SignUp$5.class
 services/DB.class
@@ -17,5 +18,6 @@ entities/User.class
 views/SignUp$1.class
 views/Login$2.class
 model/Main.class
+views/SignUp$7.class
 views/SignUp$2.class
 views/Login$3.class

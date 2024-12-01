@@ -4,7 +4,10 @@ import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import org.json.JSONObject;
 
 public class UserServices {
 
@@ -40,8 +43,7 @@ public class UserServices {
 
     }
 
-    public String Login(String username, String password) {
-
+    public JSONObject Login(String username, String password) {
         try {
             String query = "SELECT * FROM users WHERE username = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -49,20 +51,33 @@ public class UserServices {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+                String dbPassword = resultSet.getString("password");
+                if (!dbPassword.equals(password)) {
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    JSONObject data = new JSONObject();
+                    int columnCount = metaData.getColumnCount();
 
-                String avatarUrl = resultSet.getString("avatar");
-                System.out.println(avatarUrl);
-                return avatarUrl;
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object columnValue = resultSet.getObject(i);
+                        data.put(columnName, columnValue);
+                    }
+                    return data;
+                } else {
+                    System.out.println("Contraseña incorrecta");
+                    JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+                    return new JSONObject();
+                }
             } else {
                 System.out.println("Usuario no encontrado");
-                return "Usuario no encontrado";
+                JOptionPane.showMessageDialog(null, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+                return new JSONObject();
             }
         } catch (SQLException e) {
-
+            e.printStackTrace(); // Registra el error en la consola
+            JOptionPane.showMessageDialog(null, "Error en la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+            return new JSONObject();
         }
-
-        return null;
-
     }
 
 }

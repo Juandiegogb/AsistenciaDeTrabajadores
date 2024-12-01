@@ -4,6 +4,8 @@
  */
 package controllers;
 
+import javax.swing.JOptionPane;
+import org.json.JSONObject;
 import services.UserServices;
 
 /**
@@ -13,9 +15,21 @@ import services.UserServices;
 public class LoginPageController {
 
     public String Login(String username, String password) {
-        UserServices userServices = new UserServices();
-        String avatar = userServices.Login(username, password);
-        return avatar;
+
+        username = username.trim();
+        password = password.trim();
+
+        if (username.length() <= 0 || password.length() <= 0) {
+            JOptionPane.showMessageDialog(null, "Incomplete form", "Login failed", 0);
+            return null;
+        } else {
+            UserServices userServices = new UserServices();
+            JSONObject data = userServices.Login(username, password);
+            System.out.println(data.toString());
+            return null;
+
+        }
+
     }
 
 }
